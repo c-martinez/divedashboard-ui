@@ -1,0 +1,105 @@
+body {
+	margin:auto;
+	background-color:white;
+	/*"Lato" "Raleway"*/
+}
+
+h1, h2, h3 {
+	font-family:"Raleway";
+}
+
+h4, h5, h6 {
+	font-family: "Lato";
+}
+
+p {
+	font-family: "Lato";
+}
+
+.navbar-brand {
+	img {
+		height:22px;
+	}
+}
+
+.dive-header {
+	h1 {
+		margin:0px 0px $defaultMargin 0px;
+	}
+	border-bottom:1px solid #e3e3e3;
+	margin-bottom:$defaultMargin;
+}
+
+.home-separator {
+	margin:$defaultMargin * 5 0px;
+}
+
+.home-footer {
+	a {
+		color:$bgBlue;
+	}
+}
+
+.card-wrapper {
+	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 30vh; /* These two lines are counted as one :-)       */
+	display: flex;
+	align-items: center;
+}
+
+.card {
+	font-size:120%;
+	cursor:pointer;
+	padding: 0;
+	background-color: #f5f5f5;
+	border:2px solid $bgBlue;
+	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.46);
+	margin:$defaultMargin 0;
+	img {
+		display: block;
+		height: auto;
+		width: 100%;
+		max-width: 100%;
+	}
+	.caption {
+		padding: $defaultMargin;
+	}
+}
+
+.card-side-text {
+	font-family: "Lato";
+	font-size:18px;
+	margin:$defaultMargin 0;
+	background-color:white;
+	border:2px solid $bgRed;
+	padding: $defaultMargin $defaultMargin * 3;
+	line-height:2.8 * $defaultMargin;
+}
+
+.cardimage {
+	img {
+		max-width:100%;
+		border:$defaultMargin solid white;
+	    border-radius: 2px;
+	    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+    }
+}
+
+.collection-tab {
+	padding:$defaultMargin;
+	height:100%;
+}
+
+.dashboard-header {
+	width:100%;
+	text-align:center;
+	margin-bottom:$defaultMargin * 2;
+	h3 {
+		width: 30%;
+		display: inline;
+	}
+	img {
+		display: inline;
+	}
+
+}

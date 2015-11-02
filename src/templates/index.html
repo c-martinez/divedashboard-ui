@@ -1,0 +1,104 @@
+<!doctype HTML>
+
+<html>
+
+<head>
+	<title>DIVE dashboard</title>
+	<link href="/static/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+
+<body>
+
+{% with page='home', loggedIn=loggedIn, user=user %}
+{% include 'nav.html' %}
+{% endwith %}
+
+<div class="container">
+
+	<header class="dive-header">
+		<h1 class="text-center">Welcome to DIVE<br><small>Manage your DIVE collections using the dashboard</small></h1>
+	</header>
+
+	<div class="row">
+
+		<div id="1" class="col-sm-6 col-md-4 card-wrapper">
+			<div class="card" onclick="gotoPage('collection')">
+				<div class="caption">
+					<h3><i class="fa fa-cube"></i>&nbsp;Manage my collections</h3>
+					<p>Use the dashboard to upload new collections and/or curate your existing collections</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-7 card-side-text card-wrapper">
+			When uploading new collections the system will verify if your dataset is DIVE compatible. We encourage you to get into contact with us, so we can help you get your collection into the right format. <br>
+			When you already have a collection available in the system, it is possible to review annotations and/or manually edit incorrect or inappropriate data yourself.
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-6 col-md-7 card-side-text card-wrapper">
+			<p>
+			Using the <a href="http://dev.crowdtruth.org" target="_ct">CrowdTruth</a> DIVE offers collection owners to have their collections annotated either by crowd users or one or more different automatic text analysis tools.
+		</p>
+		</div>
+		<div id="2" class="col-sm-6 col-md-4 card-wrapper">
+			<div class="card" onclick="gotoPage('crowd-tasks')">
+				<div class="caption">
+					<h3><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>&nbsp;Enrich my collections</h3>
+					<p>Enrich your collections using CrowdTruth's automated or crowd annotation functionalities</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div id="3" class="col-sm-6 col-md-4 card-wrapper">
+			<div class="card">
+				<div class="caption" onclick="gotoPage('alignments')">
+					<h3><i class="fa fa-link"></i>&nbsp;Align my collections</h3>
+					<p>Aligned your collections to similar/relevant collections that are already present in DIVE</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-7 card-side-text card-wrapper">
+			<p>
+				DIVE offers the possibility to align your collection by using of our supported vocabularies, such as the
+				<a href="gtaa.beeldengeluid.nl" target="_gtaa">GTAA</a>.
+			</p>
+		</div>
+
+	</div>
+
+	<div class="text-center home-separator"><img src="/static/images/curly-separator.png"></div>
+
+
+	<h1 class="text-center">Want to know more?<br><small>Please have a look at the following links</small></h1>
+
+	<div class="text-center home-footer">
+		<h3>
+			Read more on the current status of the project
+			<a href="http://diveproject.beeldengeluid.nl" target="diveproject">here</a>
+		</h3>
+		<h3>
+			Browse the current collections using the digital submarine!
+			<a href="http://dive.beeldengeluid.nl" target="diveui">Go!</a>
+		</h3>
+	</div>
+
+	<div class="text-center home-separator"><img src="/static/images/curly-separator-2.png"></div>
+
+</div> <!-- End container-->
+
+</body>
+
+<script src="/static/bower_components/jquery/dist/jquery.js"></script>
+<script src="/static/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
+<script src="/static/js/dive-dashboard.js"></script>
+
+</html>

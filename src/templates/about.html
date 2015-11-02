@@ -1,0 +1,32 @@
+<!doctype HTML>
+
+
+<html>
+
+<head>
+	<title>DIVE dashboard</title>
+	<link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+
+<body>
+
+{% with page='about', loggedIn=loggedIn, user=user %}
+{% include 'nav.html' %}
+{% endwith %}
+
+<div class="container">
+
+	<div class="row">
+
+		<div id="1" class="col-sm-6 col-md-4 dataset">
+			This is all about us us us us
+		</div>
+
+	</div>
+
+</div> <!-- End container-->
+
+</body>
+
+</html>

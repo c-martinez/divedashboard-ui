@@ -1,0 +1,49 @@
+<!doctype HTML>
+
+
+<html>
+
+<head>
+	<title>DIVE dashboard | Alignments</title>
+	<link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+
+<body>
+
+{% with page='alignments', loggedIn=loggedIn, user=user %}
+{% include 'nav.html' %}
+{% endwith %}
+
+<div class="container">
+
+
+	{% with page='alignments', loggedIn=loggedIn, collection=collection %}
+	{% include 'dashboard-nav.html' %}
+	{% endwith %}
+
+	<div class="row">
+
+
+	<div role="tabpanel" class="tab-pane collection-tab" id="links">
+		<div class="row text-center">
+			<div class="dashboard-header">
+				<img src="/static/images/small-curl.png">
+				<h3>Aligned collections</h3>
+				<img src="/static/images/small-curl.png">
+			</div>
+		</div>
+	</div>
+
+
+	</div>
+
+</div> <!-- End container-->
+
+</body>
+
+<script src="/static/bower_components/jquery/dist/jquery.js"></script>
+<script src="/static/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
+<script src="/static/js/dive-dashboard.js"></script>
+
+</html>

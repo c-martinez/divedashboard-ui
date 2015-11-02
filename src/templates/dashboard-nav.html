@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="col-md-12">
+		<form class="form-inline text-right">
+			<div class="form-group">
+				<label for="collection_select">Selected collection</label>
+				<select id="collection_select" class="form-control" onchange="setCollection(this)">
+					<option value="">Undefined</option>
+					{% if collection=='temp'%}
+					<option value="temp" selected>temp</option>
+					{% else %}
+					<option value="temp">temp</option>
+					{% endif %}
+				</select>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<ul class="nav nav-tabs">
+			{% if page == 'collection' %}
+			<li role="presentation" class="active">
+				<a href="javascript:void(0);" onclick="gotoPage('collection');">Collection info</a>
+			</li>
+			<li role="presentation">
+				<a href="javascript:void(0);" onclick="gotoPage('crowd-tasks');">CrowdTruth</a>
+			</li>
+			<li role="presentation">
+				<a href="javascript:void(0);" onclick="gotoPage('alignments');">Alignments</a>
+			</li>
+			{% elif page == 'crowd-tasks' %}
+			<li role="presentation">
+				<a href="javascript:void(0);" onclick="gotoPage('collection');">Collection info</a>
+			</li>
+			<li role="presentation" class="active">
+				<a href="javascript:void(0);" onclick="gotoPage('crowd-tasks');">CrowdTruth</a>
+			</li>
+			<li role="presentation">
+				<a href="javascript:void(0);" onclick="gotoPage('alignments');">Alignments</a>
+			</li>
+			{% elif page == 'alignments' %}
+			<li role="presentation">
+				<a href="javascript:void(0);" onclick="gotoPage('collection');">Collection info</a>
+			</li>
+			<li role="presentation">
+				<a href="javascript:void(0);" onclick="gotoPage('crowd-tasks');">CrowdTruth</a>
+			</li>
+			<li role="presentation" class="active">
+				<a href="javascript:void(0);" onclick="gotoPage('alignments');">Alignments</a>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+</div>
