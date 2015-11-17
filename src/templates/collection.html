@@ -37,15 +37,18 @@
 				<div class="row">
 					<div class="col-md-12">
 						<ul id="collection_tabs" class="nav nav-tabs">
-							<li role="presentation" class="active">
+
+							{% if stats['no-source']%}
+							<li role="presentation">
 								<a href="#no_source" role="tab" data-toggle="tab">Media objects without a source</a>
 							</li>
+							{% endif %}
+
+							{% if stats['broken-events']%}
 							<li role="presentation">
-								<a href="#broken_events" role="tab" data-toggle="tab">Events without an actor</a>
+								<a href="#broken_events" role="tab" data-toggle="tab">Incomplete event objects</a>
 							</li>
-							<!-- <li role="presentation">
-								<a href="#no_persons" role="tab" data-toggle="tab">Events without a person</a>
-							</li> -->
+							{% endif %}
 						</ul>
 					</div>
 				</div>
@@ -54,41 +57,63 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane active" id="no_source">
+
+							{% if stats['no-source']%}
+							<div role="tabpanel" class="tab-pane" id="no_source">
 
 								<h4 class="bengfont"><i class="fa fa-link"></i>&nbsp;Select a media object to inspect it</h4>
-
+								<table class="table table-condensed table-striped">
+								<thead>
+									<th class="col-sm-6">Media object</th>
+								</thead>
+								<tbody>
 								{% for mo in stats['no-source'] %}
-									<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{mo.uri|urlencode}}" target="_repo">{{mo.title}}</a><br>
+									<tr>
+										<td>
+										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{mo.uri|urlencode}}" target="_repo">{{mo.title}}</a><br>
+										</td>
+									</tr>
 								{% endfor %}
+								</tbody>
+								</table>
 
 							</div>
+							{% endif %}
+
+							{% if stats['broken-events']%}
 							<div role="tabpanel" class="tab-pane" id="broken_events">
 
 								<h4 class="bengfont"><i class="fa fa-link"></i>&nbsp;Select a media object to inspect it</h4>
-								<table class="table">
-								{% for event in stats['broken-events'] %}
+								<table class="table table-condensed table-striped">
+								<thead>
+									<th class="col-sm-6">Event (object title)</th>
+									<th class="col-sm-3">Actor</th>
+									<th class="col-sm-3">Place</th>
+								</thead>
+								<tbody>
+								{% for k,v in stats['broken-events'].iteritems() %}
 								<tr>
-									<td class="active">
-										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{event.uri|urlencode}}" target="_inspect">{{event.mediaTitle}}</a>
+									<td>
+										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{k|urlencode}}" target="_inspect">{{v.mediaTitle}}</a>
 									</td>
-									<td class="success">
-										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{event.actor|urlencode}}" target="_inspect">{{event.actorName}}</a>
+									<td>
+										{% for a in v.actors %}
+											<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{a.uri|urlencode}}" target="_inspect">{{a.name}}</a>
+										{% endfor %}
 									</td>
-									<td class="warning">
-										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{event.place|urlencode}}" target="_inspect">{{event.placeName}}</a>
+									<td>
+										{% for p in v.places %}
+											<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{p.uri|urlencode}}" target="_inspect">{{p.name}}</a>
+										{% endfor %}
 									</td>
 								</tr>
 								{% endfor %}
+								</tbody>
+								</table>
 
 							</div>
-							<!-- <div role="tabpanel" class="tab-pane" id="no_persons">
+							{% endif %}
 
-								<h4 class="bengfont"><i class="fa fa-link"></i>&nbsp;Select a media object to inspect it</h4>
-
-
-
-							</div> -->
 						</div>
 
 					</div>

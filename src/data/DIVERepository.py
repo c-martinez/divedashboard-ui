@@ -64,7 +64,6 @@ class DIVERepository():
 		return problems
 
 	def getMediaObjectsWithoutSource(self, collection):
-		items = []
 		results = self.executeQuery("""
 			SELECT ?item ?title WHERE {
 				?item dive:inCollection <%s> .
@@ -75,18 +74,20 @@ class DIVERepository():
 			}
 			LIMIT 100
 			""" % collection)
-		for result in results["results"]["bindings"]:
-			items.append({
-				'uri' : result["item"]["value"],
-				'title' : result["title"]["value"]
-			})
-		return items
+		if results:
+			items = []
+			for result in results["results"]["bindings"]:
+				items.append({
+					'uri' : result["item"]["value"],
+					'title' : result["title"]["value"]
+				})
+			return items
+		return None
 
 	def getIncompleteEvents(self, collection):
-		items = []
 		results = self.executeQuery("""
 			PREFIX sem: <%s>
-			SELECT DISTINCT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE {
+			SELECT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE {
 				?event a sem:Event .
 				?event dive:depictedBy ?mo .
 				?mo dive:inCollection <%s> .
@@ -98,27 +99,45 @@ class DIVERepository():
 			}
 			LIMIT 3900
 			""" % (self.SEM, collection) )
-		print results
-		for result in results["results"]["bindings"]:
-			item = {
-				'uri' : result["event"]["value"],
-				'mediaUri' : result["mo"]["value"],
-				'mediaTitle' : result["title"]["value"]
-			}
-			if result.has_key('actor'):
-				item['actor'] = result["actor"]["value"]
-				item['actorName'] = result["actorName"]["value"]
-			if result.has_key('place'):
-				item['place'] = result["place"]["value"]
-				item['placeName'] = result["placeName"]["value"]
-			items.append(item)
-		return items
+		if results:
+			items = {}
+			uri = None
+			item = None
+			for result in results["results"]["bindings"]:
+				uri = result["event"]["value"]
+				if items.has_key(uri):
+					item = items[uri]
+				else:
+					item = {}
+					item['mediaUri'] = result["mo"]["value"]
+					item['mediaTitle'] = result["title"]["value"]
+					item['actors'] = []
+					item['places'] = []
+
+				#add actor
+				if result.has_key('actor'):
+					item['actors'].append({
+						'uri' : result["actor"]["value"],
+						'name' : result["actorName"]["value"]
+					})
+
+				#add place
+				if result.has_key('place'):
+					item['places'].append({
+						'uri' : result["place"]["value"],
+						'name' : result["placeName"]["value"]
+					})
+				items[uri] = item
+			return items
+		return None
 
 	def executeQuery(self, query):
 		sparql = SPARQLWrapper(self.config['DIVE_SPARQL'])
 		sparql.setQuery(query)
 		sparql.setReturnFormat(JSON)
 		results = sparql.query().convert()
+		if not results or len(results["results"]["bindings"]) == 0:
+			return None
 		return results
 
 

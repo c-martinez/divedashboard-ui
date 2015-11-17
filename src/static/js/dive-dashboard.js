@@ -2,14 +2,17 @@ _collectionId = null;
 
 $(document).ready(function(){
     loadUrlParams();
+    initTabs();
 });
 
 function initTabs(){
-    $('#collection_tabs a').click(function(a) {
+    /*$('#collection_tabs a').click(function(a) {
         if(a && a.target && a.target.href) {
             document.location.href = a.target.href;
         }
-    });
+    });*/
+    $('#collection_tabs li:eq(0)').addClass('active');
+    $('.tab-content .tab-pane:eq(0)').addClass('active');
 }
 
 function loadUrlParams() {
