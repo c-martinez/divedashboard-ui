@@ -14,6 +14,9 @@ app.config.from_pyfile('settings.py')
 app.debug = True
 
 
+_repository = DIVERepository(app.config)
+_crowdTruth = CrowdTruthAPI(app.config)
+
 """------------------------------------------------------------------------------
 GLOBAL FUNCTIONS
 ------------------------------------------------------------------------------"""
@@ -76,40 +79,51 @@ def contact():
 @requires_auth
 def collections():
     collection = request.args.get('c', None)
-    dr = DIVERepository(app.config)
-    stats = dr.getCollectionStats(collection)
+    user = getAuthenticatedUser(request)
+
+    stats = _repository.getCollectionStats(collection)
+    collections = _repository.getCollections(user)
     return render_template(
         'collection.html',
         stats=stats,
         collection=collection,
+        collections=collections,
         loggedIn=isLoggedIn(request),
-        user=getAuthenticatedUser(request)
+        user=user
     )
 
 @app.route('/crowd-tasks')
 @requires_auth
 def tasks():
     collection = request.args.get('c', None)
+    user = getAuthenticatedUser(request)
     page = request.args.get('p', 0)
-    api = CrowdTruthAPI(app.config)
-    jobs = api.getJobsOfCollection(collection, page)
+
+    jobs = _crowdTruth.getJobsOfCollection(collection, page)
+    collections = _repository.getCollections(user)
     return render_template(
         'crowd-tasks.html',
         jobs=jobs,
         collection=collection,
+        collections=collections,
         loggedIn=isLoggedIn(request),
-        user=getAuthenticatedUser(request)
+        user=user
     )
 
 @app.route('/alignments')
 @requires_auth
 def alignments():
     collection = request.args.get('c', None)
+    user = getAuthenticatedUser(request)
+
+    collections = _repository.getCollections(user)
     return render_template(
         'alignments.html',
         collection=collection,
+        collections=collections,
         loggedIn=isLoggedIn(request),
-        user=getAuthenticatedUser(request))
+        user=user
+    )
 
 
 if __name__ == '__main__':

@@ -4,12 +4,13 @@
 			<div class="form-group">
 				<label for="collection_select">Selected collection</label>
 				<select id="collection_select" class="form-control" onchange="setCollection(this)">
-					<option value="">Undefined</option>
-					{% if collection=='temp'%}
-					<option value="temp" selected>temp</option>
-					{% else %}
-					<option value="temp">temp</option>
-					{% endif %}
+					{% for c in collections %}
+						{% if c.uri == collection %}
+							<option value="{{c.uri}}" selected>{{c.label}}</option>
+						{% else %}
+							<option value="{{c.uri}}">{{c.label}}</option>
+						{% endif %}
+					{% endfor %}
 				</select>
 			</div>
 		</form>

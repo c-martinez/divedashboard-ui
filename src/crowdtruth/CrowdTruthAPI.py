@@ -8,6 +8,7 @@ class CrowdTruthAPI():
 		self.config = config
 
 	def getJobsOfCollection(self, collection, page):
+		collection = 'temp'
 		return self.fetchJobsFromCT(collection, page)
 
 
