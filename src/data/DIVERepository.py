@@ -30,6 +30,7 @@ class DIVERepository():
 		self.PROV = 'http://www.w3.org/ns/prov#'
 		self.RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 		self.RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
+		self.SEM = 'http://semanticweb.cs.vu.nl/2009/11/sem/'
 
 	def getCollections(self, user):
 		collections = []
@@ -51,23 +52,75 @@ class DIVERepository():
 			})
 		return collections
 
+	"""-----------------------------------------------------------------------
+	--------COLLECTION STATS FUNCTIONS----------------------------------------
+	-----------------------------------------------------------------------"""
+
 	def getCollectionStats(self, collection):
-		stats = {
-			'orphaned' : ['1', '2', '3'],
-			'no-entities' : ['2', '3']
+		problems = {
+			'no-source' : self.getMediaObjectsWithoutSource(collection),
+			'broken-events' : self.getIncompleteEvents(collection)
 		}
-		sparql = SPARQLWrapper(self.config['DIVE_SPARQL'])
-		sparql.setQuery("""
-			PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-			SELECT ?label
-			WHERE { ?res rdfs:label ?label } LIMIT 5
-		""")
-		sparql.setReturnFormat(JSON)
-		results = sparql.query().convert()
+		return problems
+
+	def getMediaObjectsWithoutSource(self, collection):
+		items = []
+		results = self.executeQuery("""
+			SELECT ?item ?title WHERE {
+				?item dive:inCollection <%s> .
+				?item a ?type .
+				?type rdfs:subClassOf* dive:MediaObject .
+				?item am:title ?title .
+				FILTER NOT EXISTS {?item dive:source ?src}
+			}
+			LIMIT 100
+			""" % collection)
+		for result in results["results"]["bindings"]:
+			items.append({
+				'uri' : result["item"]["value"],
+				'title' : result["title"]["value"]
+			})
+		return items
+
+	def getIncompleteEvents(self, collection):
+		items = []
+		results = self.executeQuery("""
+			PREFIX sem: <%s>
+			SELECT DISTINCT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE {
+				?event a sem:Event .
+				?event dive:depictedBy ?mo .
+				?mo dive:inCollection <%s> .
+				OPTIONAL {?mo am:title ?title }
+				OPTIONAL {?mo rdfs:label ?title }
+				OPTIONAL {?event sem:hasPlace ?place . ?place rdfs:label ?placeName}
+ 				OPTIONAL {?event sem:hasActor ?actor . ?actor rdfs:label ?actorName}
+				FILTER NOT EXISTS {?event sem:hasPlace ?place ; sem:hasActor ?actor}
+			}
+			LIMIT 3900
+			""" % (self.SEM, collection) )
 		print results
 		for result in results["results"]["bindings"]:
-			print(result["label"]["value"])
-		return stats
+			item = {
+				'uri' : result["event"]["value"],
+				'mediaUri' : result["mo"]["value"],
+				'mediaTitle' : result["title"]["value"]
+			}
+			if result.has_key('actor'):
+				item['actor'] = result["actor"]["value"]
+				item['actorName'] = result["actorName"]["value"]
+			if result.has_key('place'):
+				item['place'] = result["place"]["value"]
+				item['placeName'] = result["placeName"]["value"]
+			items.append(item)
+		return items
+
+	def executeQuery(self, query):
+		sparql = SPARQLWrapper(self.config['DIVE_SPARQL'])
+		sparql.setQuery(query)
+		sparql.setReturnFormat(JSON)
+		results = sparql.query().convert()
+		return results
+
 
 if __name__ == '__main__':
 	conf = {

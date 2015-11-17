@@ -4,6 +4,13 @@ $(document).ready(function(){
     loadUrlParams();
 });
 
+function initTabs(){
+    $('#collection_tabs a').click(function(a) {
+        if(a && a.target && a.target.href) {
+            document.location.href = a.target.href;
+        }
+    });
+}
 
 function loadUrlParams() {
     var match,
