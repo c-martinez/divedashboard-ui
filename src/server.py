@@ -81,7 +81,7 @@ def collections():
     collection = request.args.get('c', None)
     user = getAuthenticatedUser(request)
 
-    stats = _repository.getCollectionStats(collection)
+    stats = _repository.getCollectionTestResults(collection)
     collections = _repository.getCollections(user)
     return render_template(
         'collection.html',

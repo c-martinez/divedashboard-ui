@@ -56,23 +56,27 @@ class DIVERepository():
 	--------COLLECTION STATS FUNCTIONS----------------------------------------
 	-----------------------------------------------------------------------"""
 
-	def getCollectionStats(self, collection):
-		problems = {
-			'no-source' : self.getMediaObjectsWithoutSource(collection),
-			'broken-events' : self.getIncompleteEvents(collection)
+	def getCollectionTestResults(self, collection):
+		noSource = self.testMediaObjectsWithoutSource(collection)
+		brokenEvents = self.testIncompleteEvents(collection)
+		tests = {
+			'no-source' : {'name' : 'Media objects with no source', 'results' : noSource},
+			'broken-events' : {'name' : 'Events without both actors and places', 'results' : brokenEvents}
 		}
-		return problems
+		return tests
 
-	def getMediaObjectsWithoutSource(self, collection):
+	#TODO add the edm:object check as well! (AM uses this)
+	def testMediaObjectsWithoutSource(self, collection):
 		results = self.executeQuery("""
 			SELECT ?item ?title WHERE {
 				?item dive:inCollection <%s> .
 				?item a ?type .
 				?type rdfs:subClassOf* dive:MediaObject .
 				?item am:title ?title .
-				FILTER NOT EXISTS {?item dive:source ?src}
+				OPTIONAL {?item dive:source ?src}
+				OPTIONAL {?item edm:object ?src2}
+				FILTER (!bound(?src) && !bound(?src2))
 			}
-			LIMIT 100
 			""" % collection)
 		if results:
 			items = []
@@ -84,7 +88,7 @@ class DIVERepository():
 			return items
 		return None
 
-	def getIncompleteEvents(self, collection):
+	def testIncompleteEvents(self, collection):
 		results = self.executeQuery("""
 			PREFIX sem: <%s>
 			SELECT ?event ?mo ?title ?actor ?actorName ?place ?placeName WHERE {
@@ -97,7 +101,6 @@ class DIVERepository():
  				OPTIONAL {?event sem:hasActor ?actor . ?actor rdfs:label ?actorName}
 				FILTER NOT EXISTS {?event sem:hasPlace ?place ; sem:hasActor ?actor}
 			}
-			LIMIT 3900
 			""" % (self.SEM, collection) )
 		if results:
 			items = {}

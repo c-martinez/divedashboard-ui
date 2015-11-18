@@ -6,6 +6,7 @@
 <head>
 	<title>DIVE dashboard</title>
 	<link rel="stylesheet" href="/static/css/main.css">
+	<link href="/static/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 
@@ -34,40 +35,72 @@
 					</div>
 				</div>
 
+
+				<!-- SHOWS ALL THE TESTS -->
+				<div class="row">
+					<h4 class="text-center">The collections were tested for completeness, these are the results</h4>
+					<div class="col-md-12">
+						<table class="table table-condensed">
+						<thead>
+							<th class="col-sm-6">Type of test</th>
+							<th class="col-sm-2">Status</th>
+						</thead>
+						<tbody>
+						{% for k,v in stats.iteritems() %}
+							{% if v.results == None %}
+							<tr class="success">
+								<td>{{v.name}}</td>
+								<td>Succeeded</td>
+							</tr>
+							{% else %}
+							<tr class="danger">
+								<td>{{v.name}}</td>
+								<td>Failed</td>
+							</tr>
+							{% endif %}
+
+						{% endfor %}
+						</tbody>
+						</table>
+					</div>
+				</div>
+
 				<div class="row">
 					<div class="col-md-12">
 						<ul id="collection_tabs" class="nav nav-tabs">
 
-							{% if stats['no-source']%}
+							{% if stats['no-source'].results %}
 							<li role="presentation">
-								<a href="#no_source" role="tab" data-toggle="tab">Media objects without a source</a>
+								<a href="#no_source" role="tab" data-toggle="tab">
+									Media objects without a source ({{stats['no-source'].results|length}})
+								</a>
 							</li>
 							{% endif %}
 
-							{% if stats['broken-events']%}
+							{% if stats['broken-events'].results %}
 							<li role="presentation">
-								<a href="#broken_events" role="tab" data-toggle="tab">Incomplete event objects</a>
+								<a href="#broken_events" role="tab" data-toggle="tab">
+									Incomplete event objects ({{stats['broken-events'].results|length}})
+								</a>
 							</li>
 							{% endif %}
 						</ul>
 					</div>
 				</div>
 
-
+				<!-- TAB CONTENT WITH COLLECTION TEST RESULTS -->
 				<div class="row">
 					<div class="col-md-12">
 						<div class="tab-content">
 
-							{% if stats['no-source']%}
+							{% if stats['no-source'].results %}
 							<div role="tabpanel" class="tab-pane" id="no_source">
-
-								<h4 class="bengfont"><i class="fa fa-link"></i>&nbsp;Select a media object to inspect it</h4>
 								<table class="table table-condensed table-striped">
 								<thead>
 									<th class="col-sm-6">Media object</th>
 								</thead>
 								<tbody>
-								{% for mo in stats['no-source'] %}
+								{% for mo in stats['no-source'].results %}
 									<tr>
 										<td>
 										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{mo.uri|urlencode}}" target="_repo">{{mo.title}}</a><br>
@@ -80,10 +113,8 @@
 							</div>
 							{% endif %}
 
-							{% if stats['broken-events']%}
+							{% if stats['broken-events'].results %}
 							<div role="tabpanel" class="tab-pane" id="broken_events">
-
-								<h4 class="bengfont"><i class="fa fa-link"></i>&nbsp;Select a media object to inspect it</h4>
 								<table class="table table-condensed table-striped">
 								<thead>
 									<th class="col-sm-6">Event (object title)</th>
@@ -91,7 +122,7 @@
 									<th class="col-sm-3">Place</th>
 								</thead>
 								<tbody>
-								{% for k,v in stats['broken-events'].iteritems() %}
+								{% for k,v in stats['broken-events'].results.iteritems() %}
 								<tr>
 									<td>
 										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{k|urlencode}}" target="_inspect">{{v.mediaTitle}}</a>
