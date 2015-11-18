@@ -6,6 +6,8 @@
 <head>
 	<title>DIVE dashboard</title>
 	<link rel="stylesheet" href="/static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/static/bower_components/datatables/media/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.min.css">
 	<link href="/static/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
@@ -38,7 +40,7 @@
 
 				<!-- SHOWS ALL THE TESTS -->
 				<div class="row">
-					<h4 class="text-center">The collections were tested for completeness, these are the results</h4>
+					<h4 class="text-center">The selected collection was tested for completeness, these are the results</h4>
 					<div class="col-md-12">
 						<table class="table table-condensed">
 						<thead>
@@ -95,52 +97,55 @@
 
 							{% if stats['no-source'].results %}
 							<div role="tabpanel" class="tab-pane" id="no_source">
-								<table class="table table-condensed table-striped">
-								<thead>
-									<th class="col-sm-6">Media object</th>
-								</thead>
-								<tbody>
-								{% for mo in stats['no-source'].results %}
-									<tr>
-										<td>
-										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{mo.uri|urlencode}}" target="_repo">{{mo.title}}</a><br>
-										</td>
-									</tr>
-								{% endfor %}
-								</tbody>
-								</table>
-
+								<div class="table-wrapper">
+									<table class="table table-striped test-table" id="no_source_table">
+									<thead>
+										<th class="col-md-10">Media object</th>
+									</thead>
+									<tbody>
+									{% for mo in stats['no-source'].results %}
+										<tr>
+											<td>
+											<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{mo.uri|urlencode}}" target="_repo">{{mo.title}}</a><br>
+											</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+									</table>
+								</div>
 							</div>
 							{% endif %}
 
 							{% if stats['broken-events'].results %}
 							<div role="tabpanel" class="tab-pane" id="broken_events">
-								<table class="table table-condensed table-striped">
-								<thead>
-									<th class="col-sm-6">Event (object title)</th>
-									<th class="col-sm-3">Actor</th>
-									<th class="col-sm-3">Place</th>
-								</thead>
-								<tbody>
-								{% for k,v in stats['broken-events'].results.iteritems() %}
-								<tr>
-									<td>
-										<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{k|urlencode}}" target="_inspect">{{v.mediaTitle}}</a>
-									</td>
-									<td>
-										{% for a in v.actors %}
-											<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{a.uri|urlencode}}" target="_inspect">{{a.name}}</a>
-										{% endfor %}
-									</td>
-									<td>
-										{% for p in v.places %}
-											<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{p.uri|urlencode}}" target="_inspect">{{p.name}}</a>
-										{% endfor %}
-									</td>
-								</tr>
-								{% endfor %}
-								</tbody>
-								</table>
+								<div class="table-wrapper">
+									<table class="table table-striped test-table" id="broken_events_table">
+									<thead>
+										<th class="col-md-6">Event (object title)</th>
+										<th class="col-md-3">Actor</th>
+										<th class="col-md-3">Place</th>
+									</thead>
+									<tbody>
+									{% for k,v in stats['broken-events'].results.iteritems() %}
+									<tr>
+										<td>
+											<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{k|urlencode}}" target="_inspect">{{v.mediaTitle}}</a>
+										</td>
+										<td>
+											{% for a in v.actors %}
+												<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{a.uri|urlencode}}" target="_inspect">{{a.name}}</a>
+											{% endfor %}
+										</td>
+										<td>
+											{% for p in v.places %}
+												<a href="http://data.dive.beeldengeluid.nl/browse/list_resource?r={{p.uri|urlencode}}" target="_inspect">{{p.name}}</a>
+											{% endfor %}
+										</td>
+									</tr>
+									{% endfor %}
+									</tbody>
+									</table>
+								</div>
 
 							</div>
 							{% endif %}
@@ -164,7 +169,9 @@
 </body>
 
 <script src="/static/bower_components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/static/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 <script src="/static/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
+<script src="/static/js/dataTables.bootstrap.min.js"></script>
 <script src="/static/js/dive-dashboard.js"></script>
 
 </html>

@@ -1,9 +1,38 @@
 _collectionId = null;
 
+_testTables = {}
+
+
 $(document).ready(function(){
     loadUrlParams();
     initTabs();
+    initTestTables();
 });
+
+function initTestTables() {
+    $.each($('.test-table'), function(){
+        createDataTable($(this).attr('id'));
+    });
+}
+
+function createDataTable(id) {
+    _testTables[id] = $('#' + id).DataTable( {
+        paging: true,
+        lengtMenu : [10, 20, 50, 100],
+        ordering: true,
+        info: true,
+        filter : true
+    });
+
+    $('#' + id +' tbody').on('click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        } else {
+            _brokenEventsTable.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+}
 
 function initTabs(){
     /*$('#collection_tabs a').click(function(a) {

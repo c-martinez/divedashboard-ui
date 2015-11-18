@@ -8891,3 +8891,8 @@ p {
 .dashboard-header img {
   display: inline;
 }
+
+/* line 1, ../sass/_collections.scss */
+.table-wrapper {
+  margin: 10px;
+}

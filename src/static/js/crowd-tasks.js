@@ -8,10 +8,12 @@ $(document).ready(function() {
 
 function initLinksTable() {
 	_taskTable = $('#task_table').DataTable( {
-		"paging":   false,
+		"paging":   true,
+        "pageLength" : 5,
 		"ordering": false,
 		"info":     false,
 		"filter" : false
+
     });
 
     $('#task_table tbody').on( 'click', 'tr', function () {
