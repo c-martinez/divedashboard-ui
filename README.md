@@ -47,17 +47,8 @@ Whenever you make changes to the SASS files (in **/src/static/sass**), the file 
 
 The back-end (webserver) code is written using Python 2.7.
 
-In order to run the [Flask](http://flask.pocoo.org/) server, the following commands need to be run with pip:
+In order to run the [Flask](http://flask.pocoo.org/) server, check out the docs/INSTALL.md
 
-```
-pip install flask
-
-pip install simplejson
-
-pip install rdflib
-
-pip install httplib2
-```
 
 ## Configuring the server
 

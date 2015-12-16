@@ -95,8 +95,8 @@ class DIVERepository():
 				?event a sem:Event .
 				?event dive:depictedBy ?mo .
 				?mo dive:inCollection <%s> .
-				OPTIONAL {?mo am:title ?title }
-				OPTIONAL {?mo rdfs:label ?title }
+				?hasTitle rdfs:subClassOf* rdfs:label .
+  				?mo ?hasTitle ?title .
 				OPTIONAL {?event sem:hasPlace ?place . ?place rdfs:label ?placeName}
  				OPTIONAL {?event sem:hasActor ?actor . ?actor rdfs:label ?actorName}
 				FILTER NOT EXISTS {?event sem:hasPlace ?place ; sem:hasActor ?actor}
@@ -133,6 +133,24 @@ class DIVERepository():
 				items[uri] = item
 			return items
 		return None
+
+	#get an overview of what was annotated
+	def testNotMachineAnnotated(self, collection):
+		results = self.executeQuery("""
+			SELECT ?mo ?prov WHERE {
+				?mo a ?type .
+				?type rdfs:subClassOf* dive:MediaObject .
+				?mo dive:inCollection <%s> .
+  				OPTIONAL {?ann a oa:Annotation ; oa:hasTarget ?mo ; dive:prov ?prov . }
+				FILTER NOT EXISTS {
+					?ann a oa:Annotation ; oa:hasTarget ?mo ; dive:prov ?prov .
+					FILTER (regex(?prov, "NLP extractors"))
+				}
+
+			}
+			LIMIT 10
+			""" % collection
+		)
 
 	def executeQuery(self, query):
 		sparql = SPARQLWrapper(self.config['DIVE_SPARQL'])

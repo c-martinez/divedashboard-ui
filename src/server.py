@@ -5,7 +5,7 @@ from flask import request, Response, make_response
 from functools import wraps
 
 from crowdtruth.CrowdTruthAPI import CrowdTruthAPI
-from data.DIVERepository import DIVERepository
+from data.triplestore.DIVERepository import DIVERepository
 
 import simplejson
 
