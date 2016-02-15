@@ -1,0 +1,23 @@
+{
+  "name": "static",
+  "homepage": "https://github.com/beeldengeluid/divedashboard-ui",
+  "authors": [
+    "Carlos Martinez <c.martinez@esciencecenter.nl>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.0",
+    "bootstrap-sass": "^3.3.6",
+    "datatables": "^1.10.11"
+  }
+}
