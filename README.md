@@ -34,13 +34,18 @@ Download it [here](http://compass-style.org/)
 
 Follow the install instructions [here](http://compass-style.org/install/)
 
-After installation it is possible to run the following command in **/src/static**:
+After installation it is possible to run the following command in the project's root directory (`config.rb` ensures that files are stored in the correct location under `/src/static` directory).
 
+```
+compass compile
+```
+
+As an alternative, if you are actively modifying SASS files, use the following command:
 ```
 compass watch
 ```
 
-Whenever you make changes to the SASS files (in **/src/static/sass**), the file main.css is automatically updated.
+Whenever you make changes to the SASS files (in `/src/static/sass`), the file `main.css` is automatically updated.
 
 
 ### Python (libraries)
