@@ -1,6 +1,5 @@
 # DIVE Dashboard Front-end
 
-
 The DIVE Dashboard front-end code is separate from the back-end code, which is located [here](https://github.com/cwmeijer/divedashboard). Currently this codebase includes a custom back-end for testing purposes. Over time however, the idea is to only use the indicated back-end.
 
 ## Prerequisites:
@@ -18,11 +17,7 @@ You might need to install [npm](https://www.npmjs.com/) in order to get Bower in
 Then make sure to run the following commands in the **/src/static** directory of this project
 
 ```
-bower install jquery
-
-bower install bootstrap-sass
-
-bower install datatables
+bower install
 ```
 
 
