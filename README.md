@@ -14,7 +14,7 @@ Download it [here](http://bower.io/)
 
 You might need to install [npm](https://www.npmjs.com/) in order to get Bower installed.
 
-Then make sure to run the following commands in the **/src/static** directory of this project
+Then make sure to run the following commands project's root directory (`.bowerrc` ensures that files are stored in the correct location under `/src/static` directory).
 
 ```
 bower install
