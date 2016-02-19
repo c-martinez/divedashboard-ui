@@ -1,6 +1,5 @@
 # Installation
 
-
 ## Setup & install
 
 We recommend running the dashboard in a Python [virtual environment](https://virtualenv.readthedocs.org/en/latest/).
@@ -65,3 +64,17 @@ After installation make sure to also install the head plugin for ElasticSearch. 
 
 To query ElasticSearch from Python [elasticsearch-py](https://elasticsearch-py.readthedocs.org/en/master/) is used.
 Install this by downloading the master zip [here](https://github.com/elastic/elasticsearch-py) and then building it using the correct parameters (see their docs).
+
+### Docker
+
+Build docker file:
+
+```
+docker build -t dive/dashboard_run . -f Dockerfile
+```
+
+Run docker file (mount configuration):
+
+```
+docker run --privileged=true -d -p 5504:5504 -v $PWD/your-settings-location/settings.py:/app/settings.py dive/dashboard_run
+```
