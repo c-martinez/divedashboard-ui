@@ -1,5 +1,4 @@
 import httplib2
-import urllib
 import simplejson
 
 class CrowdTruthAPI():

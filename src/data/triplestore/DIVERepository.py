@@ -1,10 +1,5 @@
 #!/usr/bin/python
 
-import rdflib
-from rdflib.namespace import RDF, FOAF, DC, DCTERMS
-from rdflib import URIRef, BNode, Literal
-from rdflib import Graph, ConjunctiveGraph, Namespace
-from rdflib.plugins.stores import sparqlstore
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 """
@@ -134,23 +129,25 @@ class DIVERepository():
 			return items
 		return None
 
-	#get an overview of what was annotated
-	def testNotMachineAnnotated(self, collection):
-		results = self.executeQuery("""
-			SELECT ?mo ?prov WHERE {
-				?mo a ?type .
-				?type rdfs:subClassOf* dive:MediaObject .
-				?mo dive:inCollection <%s> .
-  				OPTIONAL {?ann a oa:Annotation ; oa:hasTarget ?mo ; dive:prov ?prov . }
-				FILTER NOT EXISTS {
-					?ann a oa:Annotation ; oa:hasTarget ?mo ; dive:prov ?prov .
-					FILTER (regex(?prov, "NLP extractors"))
-				}
 
-			}
-			LIMIT 10
-			""" % collection
-		)
+#    UNUSED CODE ??
+	#get an overview of what was annotated
+#	def testNotMachineAnnotated(self, collection):
+#		results = self.executeQuery("""
+#			SELECT ?mo ?prov WHERE {
+#				?mo a ?type .
+#				?type rdfs:subClassOf* dive:MediaObject .
+#				?mo dive:inCollection <%s> .
+ # 				OPTIONAL {?ann a oa:Annotation ; oa:hasTarget ?mo ; dive:prov ?prov . }
+#				FILTER NOT EXISTS {
+#					?ann a oa:Annotation ; oa:hasTarget ?mo ; dive:prov ?prov .
+#					FILTER (regex(?prov, "NLP extractors"))
+#				}
+#
+#			}
+#			LIMIT 10
+#			""" % collection
+#		)
 
 	def executeQuery(self, query):
 		sparql = SPARQLWrapper(self.config['DIVE_SPARQL'])

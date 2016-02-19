@@ -1,6 +1,5 @@
 # Installation
 
-
 ## Setup & install
 
 We recommend running the dashboard in a Python [virtual environment](https://virtualenv.readthedocs.org/en/latest/).
@@ -27,18 +26,11 @@ After the virtualenv has been created, activate it by:
 Then install the following Python libs with:
 
 ```
-pip install httplib2
-pip install simplejson
-pip install flask
-pip install rdflib
-pip install elasticsearch
+pip install -r requirements.txt
 ```
 
-For the last package it might be necessary to install it manually by downloading the package and running it with:
+**NOTE:** If you have problems installing elasticsearch, it might be necessary to install it manually by downloading the package and running it with `python setup.py install`
 
-```
-python setup.py install
-```
 
 Make sure to remain in the virtualenv when doing this.
 
